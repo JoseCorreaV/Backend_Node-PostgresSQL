@@ -1,0 +1,173 @@
+1. Descargar el instalador de docker
+2. Cuando ya tienes instalado Docker Desktop dentro de tus programas
+ debes abrirlo y debes asegurarte que la opción
+ “Use the WSL 2 based engine” este habilitada.
+3. Luego en la sección “Resources > WSL Integration”,
+asegurarate que la opcion “Enable integration with my default WSL distro”,
+ este habilitada.
+
+ --------------------------
+ crear el docker-compose.yml
+y luego lo subimos con el comando
+=> docker-compose up -d postgres
+
+para ver los servcios de docker
+=> docker-compose ps
+
+--------------- Omitir ----------------
+Conexion via terminal
+=> docker-compose exec postgres bash
+
+ls -l
+Ver todos los archivos
+
+psql -h localhost -d <POSTGRES_DB> -U <POSTGRES_USER>
+Conexion a Postgres
+
+\d+
+Estructura de la base de datos
+
+\q
+Salir base de datos
+
+exit
+Salir del contenedor
+
+docker-compose up -d pgadmin
+Levantar servicio de pgadmin
+
+docker-ps
+Tabla de servicios
+
+docker-inspect <id>
+Detalle del contenedor
+
+------------------------------------
+PGADMIN
+
+pgadmin:
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=admin@mail.com
+      - PGADMIN_DEFAULT_PASSWORD=root1
+    ports:
+      - 5050:80
+
+luego ejecutar
+=> docker-compose up -d pgadmin
+----------------------------------------
+
+1. Vamos a localhost del pgadmin (5050) nos logueamos
+2. Registramos o creamos un servidor con nombre diferente al bd
+3. Dirigirse en connection y completar - puerto - BD - User - Password y name host
+(estos datos deben ser iguales al archivo docker-compose.yml)
+Para saber el name host en el proyecto debemos ejecutar
+=> docker ps
+y
+=> docker inspect cd41b6b3bd65
+4. copar la IPaddress
+
+----------------------------------------
+driver de node
+npm install pg
+
+                            Error de login
+IMPORTAT ir a
+=>services.msc
+y detener los servicios de postgres ya que estos estan
+ejecutandose localmente.
+
+
+
+----------------------------------------
+pooling =>  para hacer un req frecuente
+y no generar nuevas ruta por cada consulta
+
+
+------------------ CONFIG ----------------------
+
+MALA PRACTICA DEJAR VISIBLE LAS CONTRASEÑA EN EL CODIGO
+
+Buena practica leer todo por sentencias
+
+Como se indica en la carpeta config
+
+-------------------- ENV ----------------------
+IMPORT SOLO TENER EL .ENV localmente!!
+
+----------------------------------
+
+para poder leer el archivo .env
+y cargarlas al process de node
+
+=> npm i dotenv
+
+------------------- O R M  ------------------
+1. npm install --save sequelize
+2. npm install --save pg-hstore
+3.  ne la carpeta libs crear el archivo sequelize.js
+
+
+---------------- Mysql ---------------------
+- docker-compose up -d mysql
+- docker-compose up -d phpmyadmin
+- npm install --save mysql2
+
+1. entrar a libs-conection
+2. abrir sequelize y cambiar 'postgres' por 'mysql'
+3. abrir .env
+4. configurar db_user='root' y db_port='3306'
+5. reiniciar npm run dev
+
+------------------------ SEQUILIZE -----------------------
+
+- npm i sequelize-cli --save-dev
+1.  el archivo => .sequelizerc - es para migraciones ORM
+
+
+------------------------- Migraciones -------------------------
+
+Para ejecutar las migraciones debemos agregar en el package.json
+
+1. "migrations:generate": "sequelize-cli migration:generate --name"
+
+Migración para crear los usuarios
+2. npm run migrations:generate create-user
+3. abrir BD migrations y modificar la migración -> creater-user
+
+Para ejecutar las migraciones
+npm run migrations:run
+
+
+------------------------------  Relacion de 1 a 1 --------------------
+1. crear los services, schema, routes y model de la entidad
+2. crear la migración de la entidad con:
+=> npm rum migrations:generate -NameEnty
+
+                         ejemplo de 1 a 1
+
+- abrir carpeta models y en el archivo customer.model y user.models
+esta el ejemplo para la relación
+- El archivo --  index.js -- se ejecutan los metodos de los modelos
+
+
+                         ejemplo de 1 a muchos
+
+1. crear los services, schema, routes y model de la entidad
+2. crear la migración de la entidad con:
+=> npm rum migrations:generate -NameEnty
+
+- abrir category.model y product.model para ver como se realiza la asociación
+
+
+                      ejemplo de muchos a muchos
+
+- abrir order.model y order-product.model para ver como se realiza la asociación
+
+NOTA: crear una variable de entorno .env y agregar
+PORT
+DB_USER
+DB_PASSWORD
+DB_HOST
+DB_NAME
+DB_PORT

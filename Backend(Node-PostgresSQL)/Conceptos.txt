@@ -1,0 +1,56 @@
+REST: Representational State Transfer
+Es una conveccion que se refiere a servicios web por protocolo HTTP
+
+Metodos:
+
+Get: Obtener
+Put: Modificar/Actualizar
+Patch: Modificar/Actualizar
+Post: Crear
+Delete: Eliminar
+
+
+----------------------------------------
+
+put => remplazar todos los datos de un solo producto
+patch => Remplazar el titulo de un producto
+
+
+-----------------------------------------
+Get  => para resivir parametros
+Ejmplo => api.example.com/persona/:personasId/task/:taskId =>
+
+Ejmplo 2 => app.get('/categoria/:categoriId/producto/:productId', (req, res) => {
+  // creamos variables en base a los parametros puesto en el get => :productId..
+  const { categoriId, productId } = req.params;
+  res.json([{
+    categoriId, // llamamos las variables;
+    productId
+  }]);
+});
+
+
+-------------------------------------------------
+Get: parametros query => sirve para filtrar o para acceder a x acción
+ejemplo => api.example.com/persona?page=1
+
+ejemplo 2 =>
+app.get('/productos', (req, res) => {
+  // lista de productos con array
+  const produc = [];
+
+   // definimos parametros tipo query
+   const { size } = req.query;
+   // si no existe un valor de size por defecto limit = 10 pero si ingresamos
+   /// /productos?size=1 => limit = 1
+   const limit = size || 10;
+  // agregar por defecto 10 productos utilizando faker y size
+   for (let index = 0; index < limit; index++) {
+    produc.push({
+      name: faker.commerce.productName(),
+      price: parseInt(faker.commerce.price(), 10),
+      image: faker.image.imageUrl(),
+    });
+  }
+
+  });
